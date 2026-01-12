@@ -3,37 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    
-    <!-- ✅【手机适配关键 1】锁定视口，防止双击缩放 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="format-detection" content="telephone=no">
-
     <title>内娱操盘手: 从零开始</title>
 
-    <!-- ✅【手机适配关键 2】手机拖拽补丁 (Polyfill) -->
-    <!-- 这些必须保留，不然手机上没法拖动艺人 -->
+    <!-- 手机适配补丁 (保留这个) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
     <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
     <script>
-        // 启动手机拖拽支持
         try {
             MobileDragDrop.polyfill({
                 dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
             });
-        } catch (e) {
-            console.log("Drag polyfill loading...");
-        }
+        } catch (e) {}
     </script>
-
-    <!-- ❌ 注意：之前那个 千万不要加回来了，那个就是罪魁祸首！ -->
-
- <script type="importmap">...React...</script>
     <script type="module" crossorigin src="/BuzzMakerStudios/assets/index-B97bNQd3.js"></script>
   </head>
   
   <body class="bg-gray-900 text-white overflow-hidden h-[100dvh] w-screen">
     <div id="root" class="h-full w-full"></div>
     
-    <!-- ✅ 引用你的本地代码入口 -->
-    <body class="bg-gray-900 text-white overflow-hidden h-[100dvh] w-screen touch-none selection:bg-transparent">
+    <!-- ⚠️ 宝子注意：下面这一行引用的文件必须是你 src 里真实存在的文件名 -->
+    <!-- 如果你的文件叫 main.tsx，就不用改 -->
+    <!-- 如果你的文件叫 index.tsx，请手动把下面的 main.tsx 改成 index.tsx -->
+  </body>
 </html>
