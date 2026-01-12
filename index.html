@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
     <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
     <script>
-            // 启动补丁，让手机支持拖拽
+           // 启动补丁，让手机支持拖拽
     MobileDragDrop.polyfill({
         // 这一行是为了允许拖拽时同时滚动页面
         dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
@@ -31,7 +31,7 @@
       
       /* Custom scrollbar */
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 4px;
       }
       ::-webkit-scrollbar-track {
         background: rgba(30, 41, 59, 0.5);
@@ -65,6 +65,34 @@
         background: rgba(30, 41, 59, 0.6);
         border-color: rgba(255, 255, 255, 0.15);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      }
+
+      /* --- MOBILE ADAPTIVE STYLES --- */
+      
+      /* Touch Feedback */
+      .touch-active:active {
+        transform: scale(0.96);
+        transition: transform 0.1s;
+      }
+
+      /* Bottom Sheet Modal (Mobile) */
+      @media (max-width: 768px) {
+        .modal-container {
+          align-items: flex-end !important; /* Anchor to bottom */
+          padding: 0 !important;
+        }
+        .modal-content {
+          width: 100% !important;
+          max-width: 100% !important;
+          border-radius: 24px 24px 0 0 !important; /* Top corners only */
+          max-height: 90dvh !important;
+          animation-name: slide-up !important;
+        }
+      }
+
+      @keyframes slide-up {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
       }
 
       /* Neon Text */
@@ -277,7 +305,7 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="./assets/index-BLVXYQFm.js"></script>
+  <script type="module" crossorigin src="/assets/index-DAzhdrWZ.js"></script>
 </head>
   <body class="text-slate-200 overflow-hidden h-[100dvh] w-screen">
     <div id="root" class="h-full w-full"></div>
