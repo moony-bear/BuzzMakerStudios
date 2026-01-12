@@ -1,31 +1,301 @@
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="format-detection" content="telephone=no">
-    <title>内娱操盘手: 从零开始</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>内娱操盘手：从零开始</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-color: #020617;
+        background-image: 
+          radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+          radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+          radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(30, 41, 59, 0.5);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
 
-    <!-- 手机适配补丁 (保留这个) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
-    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
-    <script>
-        try {
-            MobileDragDrop.polyfill({
-                dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
-            });
-        } catch (e) {}
-    </script>
-    <script type="module" crossorigin src="/BuzzMakerStudios/assets/index-CAqs2hXl.js"></script>
-    <link rel="stylesheet" crossorigin href="/BuzzMakerStudios/assets/index-D1z17Q7i.css">
-  </head>
-  
-  <body class="bg-gray-900 text-white overflow-hidden h-[100dvh] w-screen">
+      /* Glassmorphism Utilities */
+      .glass-panel {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      
+      .glass-card {
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+      }
+
+      .glass-card:hover {
+        background: rgba(30, 41, 59, 0.6);
+        border-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      }
+
+      /* --- MOBILE ADAPTIVE STYLES --- */
+      
+      /* Touch Feedback */
+      .touch-active:active {
+        transform: scale(0.96);
+        transition: transform 0.1s;
+      }
+
+      /* Bottom Sheet Modal (Mobile) */
+      @media (max-width: 768px) {
+        .modal-container {
+          align-items: flex-end !important; /* Anchor to bottom */
+          padding: 0 !important;
+        }
+        .modal-content {
+          width: 100% !important;
+          max-width: 100% !important;
+          border-radius: 24px 24px 0 0 !important; /* Top corners only */
+          max-height: 90dvh !important;
+          animation-name: slide-up !important;
+        }
+      }
+
+      @keyframes slide-up {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+
+      /* Neon Text */
+      .text-neon-cyan {
+        color: #22d3ee;
+        text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+      }
+      .text-neon-pink {
+        color: #e879f9;
+        text-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
+      }
+      
+      /* Gradient Text */
+      .text-gradient-gold {
+        background: linear-gradient(to right, #facc15, #a16207);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      .animate-pulse-fast {
+        animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      
+      .animate-ticker {
+        animation: ticker 20s linear infinite;
+      }
+      
+      @keyframes ticker {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-100%); }
+      }
+
+      /* Floating Text Animation */
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-30px) scale(1.1);
+          opacity: 0;
+        }
+      }
+
+      .floating-text-item {
+        position: absolute;
+        pointer-events: none;
+        animation: floatUp 0.8s ease-out forwards;
+        font-weight: bold;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        z-index: 9999;
+      }
+
+      /* Anger Animation */
+      @keyframes shake-float {
+        0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+        25% { transform: translate(-5px, -10px) rotate(-5deg); }
+        50% { transform: translate(5px, -20px) rotate(5deg); }
+        75% { transform: translate(-5px, -30px) rotate(-5deg); }
+        100% { transform: translate(0, -80px) rotate(0deg); opacity: 0; }
+      }
+
+      .floating-text-anger {
+        color: #dc2626; /* red-600 */
+        font-weight: 900;
+        font-family: 'Courier New', Courier, monospace;
+        animation: shake-float 0.6s ease-out forwards;
+        text-shadow: 2px 2px 0 #000;
+        font-size: 1.5rem;
+        z-index: 10000;
+      }
+
+      /* Archive Styles */
+      .filter-sepia {
+        filter: sepia(0.6) contrast(1.1);
+      }
+      .filter-tragedy {
+        filter: grayscale(1) contrast(1.5) brightness(0.8);
+      }
+      .filter-banned {
+        filter: grayscale(1) blur(0.5px);
+        opacity: 0.8;
+      }
+
+      /* Plastic Surgery Fallout Filter */
+      .plastic-face-filter {
+        filter: contrast(1.2) brightness(1.1) saturate(1.4) drop-shadow(0 0 2px rgba(255, 105, 180, 0.3));
+      }
+
+      /* Anti-Fan Segment Pattern */
+      .anti-fan-segment {
+        background: repeating-linear-gradient(
+          45deg,
+          #000,
+          #000 5px,
+          #333 5px,
+          #333 10px
+        );
+      }
+
+      /* --- NEW VISUAL EFFECTS --- */
+
+      /* Traitor Visuals */
+      .avatar-traitor {
+        position: relative;
+        overflow: hidden;
+        filter: grayscale(0.4) contrast(1.2);
+        box-shadow: 0 0 15px rgba(0,0,0,0.8);
+      }
+      .avatar-traitor::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        /* Cracked Glass Effect */
+        background: 
+            linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.8) 46%, rgba(0,0,0,0.9) 48%, transparent 50%),
+            linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 31%, transparent 32%);
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      /* Screen Shake for CEO Message */
+      @keyframes screen-shake {
+        0% { transform: translate(1px, 1px) rotate(0deg); }
+        10% { transform: translate(-1px, -2px) rotate(-1deg); }
+        20% { transform: translate(-3px, 0px) rotate(1deg); }
+        30% { transform: translate(3px, 2px) rotate(0deg); }
+        40% { transform: translate(1px, -1px) rotate(1deg); }
+        50% { transform: translate(-1px, 2px) rotate(-1deg); }
+        60% { transform: translate(-3px, 1px) rotate(0deg); }
+        70% { transform: translate(3px, 1px) rotate(-1deg); }
+        80% { transform: translate(-1px, -1px) rotate(1deg); }
+        90% { transform: translate(1px, 2px) rotate(0deg); }
+        100% { transform: translate(0, 0) rotate(0deg); }
+      }
+      .shake-mode {
+        animation: screen-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      }
+
+      /* Vendetta Mode Red Overlay */
+      .vendetta-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle, transparent 60%, rgba(220, 38, 38, 0.2) 100%);
+        pointer-events: none;
+        z-index: 5;
+        animation: pulse-red 2s infinite;
+      }
+      @keyframes pulse-red {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { opacity: 0.5; }
+      }
+
+      /* --- NEW ATMOSPHERE EFFECTS --- */
+      
+      /* Gold Dust Fall */
+      @keyframes gold-fall {
+        0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      }
+
+      .gold-particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #fbbf24; /* amber-400 */
+        opacity: 0.6;
+        border-radius: 50%;
+        animation: gold-fall 3s linear infinite;
+        box-shadow: 0 0 5px gold;
+      }
+
+      /* Bleak Noise */
+      @keyframes noise {
+          0%, 100% { background-position: 0 0; }
+          10% { background-position: -5% -10%; }
+          20% { background-position: -15% 5%; }
+          30% { background-position: 7% -25%; }
+          40% { background-position: 20% 25%; }
+          50% { background-position: -25% 10%; }
+          60% { background-position: 15% 5%; }
+          70% { background-position: 0% 15%; }
+          80% { background-position: 25% 35%; }
+          90% { background-position: -10% 10%; }
+      }
+      .bleak-overlay {
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          /* Inline SVG Noise Pattern */
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+          animation: noise 0.5s steps(5) infinite;
+          pointer-events: none;
+          z-index: 10;
+          mix-blend-mode: overlay;
+      }
+    </style>
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-Cz0wg_Pd.js"></script>
+</head>
+  <body class="text-slate-200 overflow-hidden h-[100dvh] w-screen">
     <div id="root" class="h-full w-full"></div>
-    
-    <!-- ⚠️ 宝子注意：下面这一行引用的文件必须是你 src 里真实存在的文件名 -->
-    <!-- 如果你的文件叫 main.tsx，就不用改 -->
-    <!-- 如果你的文件叫 index.tsx，请手动把下面的 main.tsx 改成 index.tsx -->
-  </body>
+</body>
 </html>
