@@ -3,9 +3,21 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 禁止用户缩放，禁止自动识别电话号码 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
     <title>内娱操盘手：从零开始</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 移动端拖拽补丁 (Mobile Drag Drop Polyfill) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+    <script>
+            // 启动补丁，让手机支持拖拽
+    MobileDragDrop.polyfill({
+        // 这一行是为了允许拖拽时同时滚动页面
+        dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+    });
+</script>
     <style>
       body {
         background-color: #020617;
@@ -206,6 +218,52 @@
         50% { opacity: 1; }
         100% { opacity: 0.5; }
       }
+
+      /* --- NEW ATMOSPHERE EFFECTS --- */
+      
+      /* Gold Dust Fall */
+      @keyframes gold-fall {
+        0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      }
+
+      .gold-particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #fbbf24; /* amber-400 */
+        opacity: 0.6;
+        border-radius: 50%;
+        animation: gold-fall 3s linear infinite;
+        box-shadow: 0 0 5px gold;
+      }
+
+      /* Bleak Noise */
+      @keyframes noise {
+          0%, 100% { background-position: 0 0; }
+          10% { background-position: -5% -10%; }
+          20% { background-position: -15% 5%; }
+          30% { background-position: 7% -25%; }
+          40% { background-position: 20% 25%; }
+          50% { background-position: -25% 10%; }
+          60% { background-position: 15% 5%; }
+          70% { background-position: 0% 15%; }
+          80% { background-position: 25% 35%; }
+          90% { background-position: -10% 10%; }
+      }
+      .bleak-overlay {
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          /* Inline SVG Noise Pattern */
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+          animation: noise 0.5s steps(5) infinite;
+          pointer-events: none;
+          z-index: 10;
+          mix-blend-mode: overlay;
+      }
     </style>
 
 <link rel="stylesheet" href="/index.css">
@@ -219,9 +277,9 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="./assets/index-CCIxwsIn.js"></script>
+  <script type="module" crossorigin src="./assets/index-BLVXYQFm.js"></script>
 </head>
-  <body class="text-slate-200 overflow-hidden h-screen w-screen">
+  <body class="text-slate-200 overflow-hidden h-[100dvh] w-screen">
     <div id="root" class="h-full w-full"></div>
 </body>
 </html>
